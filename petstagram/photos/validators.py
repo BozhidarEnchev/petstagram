@@ -20,5 +20,6 @@ class FileSizeValidator:
             self.__message = value
 
     def __call__(self, value):
-        if value.size > self.file_size_mb * 1024 * 1024:
+        size = value.size
+        if size > self.file_size_mb[0] * 1024 * 1024:
             raise ValidationError(self.message)

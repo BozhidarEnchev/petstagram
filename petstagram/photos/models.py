@@ -9,7 +9,7 @@ class Photo(models.Model):
     photo = models.ImageField(
         upload_to='mediafiles',
         validators=[
-            FileSizeValidator(5),
+            FileSizeValidator(file_size_mb=5),
         ]
     )
 
@@ -31,6 +31,7 @@ class Photo(models.Model):
     tagged_pets = models.ManyToManyField(
         to=Pet,
         blank=True,
+        null=True,
     )
 
     date_of_publications = models.DateField(
