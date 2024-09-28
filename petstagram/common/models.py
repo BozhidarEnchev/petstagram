@@ -4,14 +4,22 @@ from petstagram.photos.models import Photo
 
 
 class Comment(models.Model):
-    comment_text = models.TextField(
+    text = models.TextField(
         max_length=300,
     )
 
-    datetime_of_publication = models.DateTimeField(
+    date_time_of_publication = models.DateTimeField(
         auto_now_add=True,
+    )
+
+    to_photo = models.ForeignKey(
+        to=Photo,
+        on_delete=models.CASCADE,
     )
 
 
 class Like(models.Model):
-    to_photo = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    to_photo = models.ForeignKey(
+        to=Photo,
+        on_delete=models.CASCADE,
+    )

@@ -3,5 +3,6 @@ from petstagram.pets.models import Pet
 
 
 @admin.register(Pet)
-class AdminPet(admin.ModelAdmin):
-    list_display = ['name', 'slug']
+class PetAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug')
+

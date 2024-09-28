@@ -23,9 +23,11 @@ class Pet(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if not self.slug:
-            self.slug = slugify(f'{self.name}-{self.id}')
+
+        if not self.slug:  # self.name, self.id -> Sasho Sashovski 2 -> slugify -> sasho-sashovski-2
+            self.slug = slugify(f"{self.name}-{self.id}")
+
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.slug
+        return self.name
