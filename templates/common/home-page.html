@@ -1,9 +1,11 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <!-- Starts Head Section -->
 <head>
-    <link rel="stylesheet" href="/static/css/styles.css">
-    <link rel="icon" type="image/x-icon" href="/static/images/free-30-instagram-stories-icons23_122570.png">
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static "images/free-30-instagram-stories-icons23_122570.png" %}">
     <title>Petstagram</title>
 </head>
 <!-- End Head Section -->
@@ -18,11 +20,11 @@
             <div class="logo">
                 <!-- Link to Home Page -->
                 <a href="#">
-                    <img width="50px" src="/static/images/free-30-instagram-stories-icons23_122570.png" alt="img1">
+                    <img width="50px" src="{% static "images/free-30-instagram-stories-icons23_122570.png"%}" alt="img1" >
                 </a>
 
                 <!-- Link to Home Page -->
-                <a class="home" href="#">
+                <a class="home" href="{% url 'home-page' %}">
                     <i>Petstagram</i>
                 </a>
             </div>
@@ -31,42 +33,36 @@
                 <ul class="nav-group">
                     <li class="nav-item">
 
-                        <!-- Link to Add Pet Page -->
-                        <a href="#">
+                        <a href="{% url 'pet-add' %}">
                             <i>Add Pet</i>
                         </a>
                     </li>
                     <li class="nav-item">
 
-                        <!-- Link to Add Photo Page -->
-                        <a href="#">
+                        <a href="{% url 'photo-add' %}">
                             <i>Add Photo</i>
                         </a>
                     </li>
                     <li class="nav-item">
 
-                        <!-- Link to Login Page -->
-                        <a href="#">
+                        <a href="{% url 'login' %}">
                             <i>Login</i>
                         </a>
                     </li>
                     <li class="nav-item">
 
-                        <!-- Link to Register Page -->
-                        <a href="">
+                        <a href="{% url 'register' %}">
                             <i>Register</i>
                         </a>
                     </li>
                     <li class="nav-item">
 
-                        <!-- Link to Profile Page -->
-                        <a href="#">
+                        <a href="{% url 'profile-details' %}">
                             <i>Profile</i>
                         </a>
                     </li>
                     <li class="nav-item">
 
-                        <!-- Lpg out -->
                         <a href="#">
                             <i>Log out</i>
                         </a>
@@ -87,7 +83,7 @@
             <form class="searchbar" method="post">
                 <input type="text" placeholder="Search by pet name...">
                 <button>
-                    <img src="/static/images/search.png" height="18" alt="img2">
+                    <img src="{% static 'images/search.png' %}" height="18" alt="img2">
                 </button>
             </form>
             <!-- End Searchbar Form -->
