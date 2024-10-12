@@ -12,8 +12,8 @@ def photo_edit_page(request, pk: int):
 
 
 def photo_details_page(request, pk: int):
-    photos = Photo.objects.filter(pk=pk)
+    photo = Photo.objects.get(pk=pk)
     context = {
-        "photos": photos
+        "photo": photo
     }
     return render(request, 'photos/photo-details-page.html', context=context)
