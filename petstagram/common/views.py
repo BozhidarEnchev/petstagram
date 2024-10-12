@@ -12,7 +12,8 @@ def home_page(request):
 
 
 def like_functionality(request, pk):
-    pass
+    photo = Photo.objects.get(pk=pk)
+    # like = Like.objects.get()
 
 
 def copy_link_to_clipboard(request, pk):
