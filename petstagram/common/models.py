@@ -18,6 +18,9 @@ class Comment(models.Model):
     )
 
     class Meta:
+        indexes = [
+            models.Index(fields=['date_time_of_publication']),
+        ]
         ordering = ['-date_time_of_publication']
 
 
