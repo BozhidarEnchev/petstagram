@@ -17,6 +17,38 @@
                 {% include 'common/pet-photos.html' %}
             {% endfor %}
 
+            <div class="pagination">
+                <span class="current">
+                        Page {{ photos.number }} of {{ photos.paginator.num_pages }}
+                </span>
+
+                <span class="step-links-buttons">
+
+                    <!-- If there are previous and next photos -->
+                    {% if photos.has_previous and photos.has_next %}
+                        <a href="?page={{ photos.previous_page_number }}">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+                        <a href="?page={{ photos.next_page_number }}">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+
+                    <!-- If there are only previous photos -->
+                    {% elif photos.has_previous %}
+                        <a href="?page={{ photos.previous_page_number }}">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </a>
+
+                    <!-- If there are only next photos -->
+                    {% elif photos.has_next %}
+                        <a href="?page={{ photos.next_page_number }}">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    {% endif %}
+
+                </span>
+            </div>
+
         </div>
     </div>
 {% endblock %}

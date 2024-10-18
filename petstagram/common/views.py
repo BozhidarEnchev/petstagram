@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, resolve_url
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from petstagram.common.models import Like
 from petstagram.photos.models import Photo
@@ -15,6 +16,16 @@ def home_page(request):
         photos = photos.filter(
             tagged_pets__name__icontains=search_form.cleaned_data['pet_name']
         )
+    photos_per_page = 1
+    paginator = Paginator(photos, photos_per_page)
+    page = request.GET.get('page')
+
+    try:
+        photos = paginator.page(page)
+    except PageNotAnInteger:
+        photos = paginator.page(1)
+    except EmptyPage:
+        photos = paginator.page(paginator.num_pages)
 
     context = {
         "photos": photos,
