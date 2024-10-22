@@ -74,21 +74,20 @@ class EditPetView(UpdateView):
 class DeletePetView(DeleteView):
     model = Pet
     template_name = 'pets/pet-delete-page.html'
-    context_object_name = 'pet'
+    slug_url_kwarg = 'pet_slug'
+    form_class = PetDeleteForm
     success_url = reverse_lazy('profile-details', kwargs={'pk': 1})
 
-    def get_object(self, queryset=None):
-        return Pet.objects.get(slug=self.kwargs['pet_slug'])
+    def get_initial(self):
+        return self.get_object().__dict__
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form'] = PetDeleteForm(initial=self.object.__dict__)
-        return context
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'data': self.get_initial()
+        })
 
-    # def delete(self, *args, **kwargs):
-    #     pet = self.get_object()
-    #     pet.delete()
-    #     return redirect(self.success_url)
+        return kwargs
 
 # def pet_details_page(request, username: str, pet_slug: str):
 #     pet = Pet.objects.get(slug=pet_slug)
@@ -112,6 +111,6 @@ class PetDetailsView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['all_photos'] = self.object.photo_set.all()
+        context['all_photos'] = self.object.photo_set.all()  # context['pet'].photo_set.all()
         context['comment_form'] = CommentForm()
         return context
