@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, resolve_url
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.views.generic import ListView
 
 from petstagram.common.models import Like
 from petstagram.photos.models import Photo
@@ -7,6 +8,34 @@ from petstagram.common.forms import CommentForm, SearchForm
 from pyperclip import copy
 
 
+# CBV for home page
+class HomePage(ListView):
+    model = Photo
+    template_name = 'common/home-page.html'
+    context_object_name = 'photos'
+    paginate_by = 1
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['comment_form'] = CommentForm()
+        context['search_form'] = SearchForm(self.request.GET)
+
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        pet_name = self.request.GET.get('pet_name')
+
+        if pet_name:
+            queryset = queryset.filter(
+                tagged_pets__name__icontains=pet_name,
+            )
+
+        return queryset
+
+
+# FBV for home page
 def home_page(request):
     photos = Photo.objects.all()
     comment_form = CommentForm()
@@ -20,12 +49,7 @@ def home_page(request):
     paginator = Paginator(photos, photos_per_page)
     page = request.GET.get('page')
 
-    try:
-        photos = paginator.page(page)
-    except PageNotAnInteger:
-        photos = paginator.page(1)
-    except EmptyPage:
-        photos = paginator.page(paginator.num_pages)
+    photos = paginator.get_page(page)
 
     context = {
         "photos": photos,
