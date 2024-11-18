@@ -56,10 +56,10 @@
                 </div>
                 <!-- User First and Last Name IF Added -->
 
-                <h3 class="names">{{ request.user.profile.get_profile_name }}</h3>
+                <h3 class="names">{{ object.profile.get_profile_name }}</h3>
 
                 <!-- User Email Address -->
-                <p class="email">{{ request.user.email }}</p>
+                <p class="email">{{ object.email }}</p>
 
                 <!-- User Gender IF Added -->
                 <p class="gender">Male</p>
