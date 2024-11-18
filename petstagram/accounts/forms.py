@@ -28,4 +28,3 @@ class ProfileEditForm(forms.ModelForm):
             'date_of_birth': 'Date of Birth',
             'profile_picture': 'Profile Picture',
         }
-

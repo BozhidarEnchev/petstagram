@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Count
 from django.shortcuts import render
 from django.urls.base import reverse_lazy
-from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 
 from petstagram.accounts.forms import AppUserCreationForm, ProfileEditForm
 
@@ -28,11 +29,13 @@ class AppUserRegisterView(CreateView):
         return response
 
 
-def profile_delete(request, pk: int):
-    return render(request, 'accounts/profile-delete-page.html')
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
+    model = UserModel
+    template_name = 'accounts/profile-delete-page.html'
+    success_url = reverse_lazy('home')
 
 
-class ProfileEditView(UpdateView):
+class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = UserModel
     form_class = ProfileEditForm
     template_name = 'accounts/profile-edit-page.html'
@@ -44,7 +47,7 @@ class ProfileEditView(UpdateView):
         return self.request.user.profile
 
 
-class ProfileDetailsView(DetailView):
+class ProfileDetailsView(LoginRequiredMixin, DetailView):
     model = UserModel
     template_name = 'accounts/profile-details-page.html'
 

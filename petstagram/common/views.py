@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, resolve_url
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.views.generic import ListView
@@ -60,6 +61,7 @@ def home_page(request):
     return render(request, 'common/home-page.html', context=context)
 
 
+@login_required
 def like_functionality(request, photo_id):
     like_obj = Like.objects.filter(
         to_photo=photo_id
@@ -80,8 +82,9 @@ def copy_link_to_clipboard(request, photo_id):
     return redirect(request.META.get('HTTP_REFERER') + f'#{photo_id}')
 
 
+@login_required
 def comment_functionality(request, photo_id: int):
-    if request.POST :
+    if request.POST:
         photo = Photo.objects.get(pk=photo_id)
         comment_form = CommentForm(request.POST)
 
