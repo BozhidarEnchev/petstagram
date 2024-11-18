@@ -1,5 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from petstagram.common.forms import CommentForm
@@ -48,11 +48,12 @@ class AddPetView(LoginRequiredMixin, CreateView):
 #     return render(request, 'pets/pet-edit-page.html', context)
 
 
-class EditPetView(LoginRequiredMixin, UpdateView):
+class EditPetView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Pet
     template_name = 'pets/pet-edit-page.html'
     slug_url_kwarg = 'pet_slug'
     context_object_name = 'pet'
+    form_class = PetEditForm
 
     def get_success_url(self):
         return reverse_lazy(
@@ -63,6 +64,9 @@ class EditPetView(LoginRequiredMixin, UpdateView):
             }
         )
 
+    def test_func(self):
+        profile = get_object_or_404(Pet, slug=self.kwargs['pet_slug'])
+        return self.request.user == profile.user
 
 # def pet_delete_page(request, username: str, pet_slug: str):
 #     pet = Pet.objects.get(slug=pet_slug)
@@ -79,12 +83,14 @@ class EditPetView(LoginRequiredMixin, UpdateView):
 #     return render(request, 'pets/pet-delete-page.html', context)
 
 
-class DeletePetView(LoginRequiredMixin, DeleteView):
+class DeletePetView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Pet
     template_name = 'pets/pet-delete-page.html'
     slug_url_kwarg = 'pet_slug'
     form_class = PetDeleteForm
-    success_url = reverse_lazy('profile-details', kwargs={'pk': 1})
+
+    def get_success_url(self):
+        return reverse_lazy('profile-details', kwargs={'pk': self.request.user.pk})
 
     def get_initial(self):
         return self.get_object().__dict__
@@ -96,6 +102,10 @@ class DeletePetView(LoginRequiredMixin, DeleteView):
         })
 
         return kwargs
+
+    def test_func(self):
+        profile = get_object_or_404(Pet, slug=self.kwargs['pet_slug'])
+        return self.request.user == profile.user
 
 # def pet_details_page(request, username: str, pet_slug: str):
 #     pet = Pet.objects.get(slug=pet_slug)
