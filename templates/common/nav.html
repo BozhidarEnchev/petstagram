@@ -1,33 +1,34 @@
 {% load static %}
 
 <nav class="navbar">
-        <div class="container">
-            <div class="logo">
-                <!-- Link to Home Page -->
-                <a href="{% url 'home' %}">
-                    <img width="50px" src="{% static "images/free-30-instagram-stories-icons23_122570.png" %}" alt="img1" >
-                </a>
+    <div class="container">
+        <div class="logo">
+            <!-- Link to Home Page -->
+            <a href="{% url 'home' %}">
+                <img width="50px" src="{% static "images/free-30-instagram-stories-icons23_122570.png" %}" alt="img1">
+            </a>
 
-                <!-- Link to Home Page -->
-                <a class="home" href="{% url 'home' %}">
-                    <i>Petstagram</i>
-                </a>
-            </div>
+            <!-- Link to Home Page -->
+            <a class="home" href="{% url 'home' %}">
+                <i>Petstagram</i>
+            </a>
+        </div>
 
-            <div class="nav-links">
-                <ul class="nav-group">
-                    <li class="nav-item">
+        <div class="nav-links">
+            <ul class="nav-group">
+                <li class="nav-item">
 
-                        <a href="{% url 'add-pet' %}">
-                            <i>Add Pet</i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
+                    <a href="{% url 'add-pet' %}">
+                        <i>Add Pet</i>
+                    </a>
+                </li>
+                <li class="nav-item">
 
-                        <a href="{% url 'photo-add' %}">
-                            <i>Add Photo</i>
-                        </a>
-                    </li>
+                    <a href="{% url 'photo-add' %}">
+                        <i>Add Photo</i>
+                    </a>
+                </li>
+                {% if not request.user.is_authenticated %}
                     <li class="nav-item">
 
                         <a href="{% url 'login' %}">
@@ -40,19 +41,20 @@
                             <i>Register</i>
                         </a>
                     </li>
+                {% else %}
+                    
                     <li class="nav-item">
 
-                        <a href="{% url 'profile-details' 1 %}">
+                        <a href="{% url 'profile-details' request.user.pk|default:4 %}">
                             <i>Profile</i>
                         </a>
                     </li>
-                    <li class="nav-item">
-
-                        <a href="#">
-                            <i>Log out</i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                    <form method='post' action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="button"><i>Logout</i></button>
+                    </form>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
